@@ -1,0 +1,25 @@
+{
+  "name": "image-hub",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "folder": "rm -rf build && mkdir build",
+    "bucket": "aws s3api create-bucket --bucket image-resizer-cf-bucket --region us-east-1",
+    "package": "aws cloudformation package --template-file template.yaml --output-template-file build/output.yaml --s3-bucket image-resizer-cf-bucket",
+    "deploy": "aws cloudformation deploy --template-file build/output.yaml --stack-name lambda-edge-image-resizer  --capabilities CAPABILITY_NAMED_IAM",
+    "qd": "npm run folder && npm run package && npm run deploy"
+  },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/Piloteers/cloudfront-image-hub.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+      "url": "https://github.com/Piloteers/cloudfront-image-hub/issues"
+    },
+    "homepage": "https://github.com/Piloteers/cloudfront-image-hub#readme"
+  }
