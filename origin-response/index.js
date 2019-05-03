@@ -5,9 +5,6 @@ const https = require('https');
 const querystring = require('querystring');
 const compose = (...fns) => x => fns.reduceRight((v, f) => f(v), x)
 
-const ACCOUNT_ID = process.env.ACCOUNT_ID || "Your Account Id"
-const AWS_REGION = process.env.AWS_REGION || "us-east-1"
-
 const AWS = require('aws-sdk');
 const S3 = new AWS.S3({
   signatureVersion: 'v4',
@@ -20,14 +17,14 @@ const getAccountId = context =>
     ? ({accountId: context.invokedFunctionArn
        .split(':')[4],
         context})
-    : ({accountId: ACCOUNT_ID, context})
+    : ({accountId:'306098392847', context})
 
 const getAccountRegion = ({accountId, context}) =>
   context.invokedFunctionArn !== null && context.invokedFunctionArn !== undefined
     ? ({accountId, accountRegion: context.invokedFunctionArn
        .split(':')[6]
        .split('.')[0]})
-    : ({accountId, accountRegion: AWS_REGION})
+    : ({accountId, accountRegion: 'us-east-1'})
 
 const constructBucketName = ({accountId, accountRegion}) =>
   `image-resize-cloudfront-${accountId}-${accountRegion}` 
@@ -132,4 +129,3 @@ exports.handler = (event, context, callback) => {
     return callback(null, response);
   }
 };
-
